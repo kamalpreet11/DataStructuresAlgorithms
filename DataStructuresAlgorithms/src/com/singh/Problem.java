@@ -30,12 +30,12 @@ public abstract class Problem {
         return message;
     }
     
-    public final boolean execute() {        
+    public final boolean execute(boolean verbose) {        
         Logger.br();
         Logger.log("Executing ");Logger.log(type);Logger.log(" - ");Logger.logn(message);
         boolean result = true;
         try {
-            result = onExecute();
+            result = onExecute(verbose);
             Logger.log("Finished Successfully: ");Logger.logn(type);
         } catch (Exception e) {
             Logger.log("Did not complete: ");Logger.logn(type);
@@ -46,5 +46,5 @@ public abstract class Problem {
         return result;
     }
     
-    public abstract boolean onExecute() throws Exception;
+    public abstract boolean onExecute(boolean verbose) throws Exception;
 }
