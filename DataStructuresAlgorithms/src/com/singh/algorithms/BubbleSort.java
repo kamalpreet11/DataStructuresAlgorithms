@@ -5,18 +5,20 @@
  */
 package com.singh.algorithms;
 
+import com.singh.CompareObject;
+
 /**
  *
  * @author kapsinator
  */
-public class BubbleSort {
+public class BubbleSort<T> {
 
-    public int[] sort(int[] input) {
+    public T[] sort(T[] input, CompareObject<T, T> compare) {
         if (input != null) {
             for (int i = 0; i < input.length; i++) {
                 for (int j = 0; j < input.length - i - 1; j++) {
-                    if (input[j] > input[j + 1]) {
-                        int temp = input[j];
+                    if (compare.compare(input[j], input[j + 1]) > 0) {
+                        T temp = input[j];
                         input[j] = input[j + 1];
                         input[j + 1] = temp;
                     }

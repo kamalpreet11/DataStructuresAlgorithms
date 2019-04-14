@@ -5,21 +5,23 @@
  */
 package com.singh.algorithms;
 
+import com.singh.CompareObject;
+
 /**
  *
  * @author kapsinator
  */
-public class QuickSort {
+public class QuickSort<T> {
 
-    public int[] sort(int[] input) {
+    public T[] sort(T[] input, CompareObject<T, T> compare) {
         if (input != null) {
-            return sort(input, 0, input.length - 1, 0);
+            return sort(input, 0, input.length - 1, 0, compare);
         } else {
             return input;
         }
     }
     
-    private int[] sort(int[] input, int left, int right, int location) {
+    private T[] sort(T[] input, int left, int right, int location, CompareObject<T, T> compare) {
         int origRight = right;
         int origLeft = left;
         
@@ -32,22 +34,22 @@ public class QuickSort {
         }
         
         while (left != right) {
-            while (input[location] <= input[right] && location != right) {
+            while (compare.compare(input[location], input[right]) < 0 && location != right) {
                 right--;
             }
             if (location == right) {
                 break;
             }
 
-            if (input[location] > input[right]) {
-                int temp = input[location];
+            if (compare.compare(input[location], input[right]) > 0) {
+                T temp = input[location];
                 input[location] = input[right];
                 input[right] = temp;
             }
 
             location = right;
 
-            while (location != left && input[left] <= input[location]) {
+            while (location != left && compare.compare(input[left], input[location]) < 0) {
                 left++;
             }
 
@@ -55,15 +57,15 @@ public class QuickSort {
                  break;
             }
 
-            if (input[left] > input[location]) {
-                int temp = input[location];
+            if (compare.compare(input[left], input[location]) > 0) {
+                T temp = input[location];
                 input[location] = input[left];
                 input[left] = temp;
             }
             location = left;
         }
-        sort(input, origLeft, location - 1, origLeft);
-        sort(input, location + 1, origRight, location + 1);
+        sort(input, origLeft, location - 1, origLeft, compare);
+        sort(input, location + 1, origRight, location + 1, compare);
         return input;
     }    
 }

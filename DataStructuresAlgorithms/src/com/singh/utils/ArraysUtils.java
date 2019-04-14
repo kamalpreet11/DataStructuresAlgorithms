@@ -11,7 +11,7 @@ package com.singh.utils;
  */
 public class ArraysUtils {
 
-    public static void printArray(int[] input) {
+    public static void printArray(Integer[] input) {
         if (input != null) {
             Logger.log("Array: [");
             for (int i = 0; i < input.length; i++) {
