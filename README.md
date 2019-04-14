@@ -3,4 +3,5 @@ My implementation of various Data Structures and Algorithms
 
 Algorithms
 ==========
-* QuickSort
+* Quick Sort
+* Bubble Sort
