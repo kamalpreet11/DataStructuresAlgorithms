@@ -39,7 +39,8 @@ public abstract class Problem {
             Logger.log("Finished Successfully: ");Logger.logn(type);
         } catch (Exception e) {
             Logger.log("Did not complete: ");Logger.logn(type);
-            Logger.log("Failed with error: ");Logger.logn(e.getMessage());
+            Logger.log("Failed with error: ");Logger.logn(e.toString());
+            e.printStackTrace();
         }        
         Logger.br();
         return result;

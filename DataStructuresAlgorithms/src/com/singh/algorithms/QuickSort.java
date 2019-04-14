@@ -5,30 +5,21 @@
  */
 package com.singh.algorithms;
 
-import java.util.Stack;
-
 /**
  *
  * @author kapsinator
  */
 public class QuickSort {
 
-    public int[] qSort(int[] input) {
-        Stack<Integer> stack = new Stack<>();
-        if (input != null && input.length > 1) {
-            stack.add(0);
-            stack.add(input.length - 1);
-            while (!stack.isEmpty()) {
-                int right = stack.pop();
-                int left = stack.pop();
-                int location = left;
-                input = sort(input, left, right, location, stack);
-            }
+    public int[] sort(int[] input) {
+        if (input != null) {
+            return sort(input, 0, input.length - 1, 0);
+        } else {
+            return input;
         }
-        return input;
     }
     
-    private int[] sort(int[] input, int left, int right, int location, Stack<Integer> stack) {
+    private int[] sort(int[] input, int left, int right, int location) {
         int origRight = right;
         int origLeft = left;
         
@@ -71,10 +62,8 @@ public class QuickSort {
             }
             location = left;
         }
-        stack.add(origLeft);
-        stack.add(location - 1);
-        stack.add(location + 1);
-        stack.add(origRight);
+        sort(input, origLeft, location - 1, origLeft);
+        sort(input, location + 1, origRight, location + 1);
         return input;
     }    
 }

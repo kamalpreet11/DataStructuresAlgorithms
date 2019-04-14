@@ -50,10 +50,12 @@ public class ProblemQuickSort extends Problem {
 
         @Override
         public boolean run() throws Exception {
-            input = (new QuickSort()).qSort(input);
+//            Logger.log("Input  ");ArraysUtils.printArray(input);
+            input = (new QuickSort()).sort(input);
             if(!Arrays.equals(input, output)) {
                 throw new Exception("Test case failed: " + testCaseLabel);
             }
+//            Logger.log("Sorted ");ArraysUtils.printArray(input);
             return true;
         }
     }
