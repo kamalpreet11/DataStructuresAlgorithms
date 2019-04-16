@@ -36,7 +36,11 @@ public abstract class Problem {
         boolean result = true;
         try {
             result = onExecute(verbose);
-            Logger.log("Finished Successfully: ");Logger.logn(type);
+            if (result) {
+                Logger.log("Finished Successfully: ");Logger.logn(type);
+            } else {
+                Logger.log("Finished But failed: ");Logger.logn(type);
+            }
         } catch (Exception e) {
             Logger.log("Did not complete: ");Logger.logn(type);
             Logger.log("Failed with error: ");Logger.logn(e.toString());

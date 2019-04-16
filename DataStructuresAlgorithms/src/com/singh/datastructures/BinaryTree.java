@@ -50,6 +50,21 @@ public class BinaryTree<T> {
         return this;
     }
     
+    public TreeNode contains(T data) {
+                
+        TreeNode<T> iterator = root;
+        
+        while (iterator != null && iterator.data != data) {
+            if (compare.compare(iterator.data, data) > 0) {
+                iterator = iterator.left;
+            } else if (compare.compare(iterator.data, data) < 0) {
+                iterator = iterator.right;
+            }
+        }
+        
+        return iterator;
+    }
+    
     public void toPreOrder(TreeNode node, ArrayList<TreeNode> out) {
         if (node != null) {
             out.add(node);
