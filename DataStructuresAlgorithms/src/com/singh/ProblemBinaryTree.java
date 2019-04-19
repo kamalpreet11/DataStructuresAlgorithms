@@ -57,6 +57,83 @@ public class ProblemBinaryTree extends Problem {
             result &= (new BinaryTreeSearchTestCase("Binary tree Search", bTree, 90, verbose)).run();
             result &= (new BinaryTreeSearchMissingTestCase("Binary tree Search Missing item", bTree, 901, verbose)).run();
             result &= (new BinaryTreeSearchMissingTestCase("Binary tree Search Missing item", bTree, 9, verbose)).run();
+            
+            BinaryTree<Integer> bTreeDeletion = new BinaryTree<>(new CompareObject<Integer, Integer>() {
+                @Override
+                public int compare(Integer object1, Integer object2) {
+                    if (object1 < object2) {
+                        return -1;
+                    } else if (object1 > object2) {
+                        return 1;
+                    } else {
+                        return 0;
+                    }
+                }
+            });
+            bTreeDeletion.add(60)
+                .add(25)
+                .add(15)
+                .add(50)
+                .add(33)
+                .add(44)
+                .add(75)
+                .add(66);
+            
+            result &= (new BinaryTreeLeafDeleteTestCase("Binary Tree Leaf delete", bTreeDeletion, new Integer[]{15, 25, 33, 50, 60, 66, 75}, verbose, 44)).run();
+            result &= (new BinaryTreeLeafDeleteTestCase("Binary Tree Leaf delete", bTreeDeletion, new Integer[]{25, 33, 50, 60, 66, 75}, verbose, 15)).run();
+            result &= (new BinaryTreeLeafDeleteTestCase("Binary Tree Leaf delete", bTreeDeletion, new Integer[]{25, 33, 50, 60, 75}, verbose, 66)).run();
+            result &= (new BinaryTreeLeafDeleteTestCase("Binary Tree Leaf delete", bTreeDeletion, new Integer[]{25, 33, 60, 75}, verbose, 50)).run();
+            result &= (new BinaryTreeLeafDeleteTestCase("Binary Tree Leaf delete", bTreeDeletion, new Integer[]{33, 60, 75}, verbose, 25)).run();
+            try {
+                (new BinaryTreeLeafDeleteTestCase("Binary Tree Leaf delete", bTreeDeletion, new Integer[]{25, 33, 50, 60, 75}, verbose, 66)).run();
+                result &= false;
+            } catch(Exception e) {
+                result &= true;
+            }
+            
+            BinaryTree<Integer> bTreeDeletionInternal = new BinaryTree<>(new CompareObject<Integer, Integer>() {
+                @Override
+                public int compare(Integer object1, Integer object2) {
+                    if (object1 < object2) {
+                        return -1;
+                    } else if (object1 > object2) {
+                        return 1;
+                    } else {
+                        return 0;
+                    }
+                }
+            });
+            bTreeDeletionInternal.add(60)
+                .add(25)
+                .add(15)
+                .add(50)
+                .add(33)
+                .add(44)
+                .add(75)
+                .add(66);
+            result &= (new BinaryTreeLeafDeleteTestCase("Binary Tree Internal delete", bTreeDeletionInternal, new Integer[]{15, 33, 44, 50, 60, 66, 75}, verbose, 25)).run();
+            result &= (new BinaryTreeLeafDeleteTestCase("Binary Tree Root delete", bTreeDeletionInternal, new Integer[]{15, 33, 44, 50, 66, 75}, verbose, 60)).run();
+            
+            
+            BinaryTree<Integer> bTreeRootDeletion = new BinaryTree<>(new CompareObject<Integer, Integer>() {
+                @Override
+                public int compare(Integer object1, Integer object2) {
+                    if (object1 < object2) {
+                        return -1;
+                    } else if (object1 > object2) {
+                        return 1;
+                    } else {
+                        return 0;
+                    }
+                }
+            });
+            bTreeRootDeletion.add(60)
+                .add(75)
+                .add(66);
+            result &= (new BinaryTreeLeafDeleteTestCase("Binary Tree Single child root delete", bTreeRootDeletion, new Integer[]{66, 75}, verbose, 60)).run();
+            bTreeRootDeletion.add(64);
+            result &= (new BinaryTreeLeafDeleteTestCase("Binary Tree Single child root delete", bTreeRootDeletion, new Integer[]{64, 66}, verbose, 75)).run();
+            
         return result;
     }
     
@@ -144,6 +221,45 @@ public class ProblemBinaryTree extends Problem {
                 return true;
             }
             if (verbose) { Logger.logn("Tree does contain item " + output); }
+            throw new Exception("Test case failed: " + testCaseLabel);
+        }
+ 
+    }
+    
+    public static final class BinaryTreeLeafDeleteTestCase extends TestCase<BinaryTree, Integer[]> {
+
+        Integer item;
+        
+        public BinaryTreeLeafDeleteTestCase(String testCaseLabel, BinaryTree input, Integer[] output, boolean verbose, Integer item) {
+            super(testCaseLabel, input, output, verbose);
+            this.item = item;
+        }
+
+        @Override
+        public boolean run() throws Exception {
+            TreeNode result = input.delete(item);
+            
+            if (result != null && result.getData() == item) {
+                ArrayList<TreeNode> orderTree = new ArrayList();
+                input.toInOrder(input.getRoot(), orderTree);
+                Integer[] results = new Integer[orderTree.size()];
+                for (int i = 0; i < orderTree.size(); i++) {
+                    results[i] = (Integer) orderTree.get(i).getData();
+                }
+
+                if (output.length != results.length) {
+                    if (verbose) { Logger.log("Sorted ");ArraysUtils.printArray(results); }
+                    throw new Exception("Test case failed: " + testCaseLabel);
+                }
+                for (int i = 0; i < orderTree.size(); i++) {
+                    if (output[i] != results[i]) {
+                        if (verbose) { Logger.log("Sorted ");ArraysUtils.printArray(results); }
+                        throw new Exception("Test case failed: " + testCaseLabel);
+                    }
+                }
+                return true;
+            }
+            if (verbose) { Logger.logn("Tree does not contain item " + item); }
             throw new Exception("Test case failed: " + testCaseLabel);
         }
  

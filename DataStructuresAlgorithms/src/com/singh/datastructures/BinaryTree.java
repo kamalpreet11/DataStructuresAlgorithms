@@ -65,6 +65,94 @@ public class BinaryTree<T> {
         return iterator;
     }
     
+    public TreeNode delete(T data) {
+        if (root == null) {
+            return null;
+        } else {
+            TreeNode<T> iterator = root;
+            TreeNode<T> parent = null;
+            while(iterator != null) {
+                if (compare.compare(iterator.data, data) > 0) {
+                    parent = iterator;
+                    iterator = iterator.left;
+                } else if (compare.compare(iterator.data, data) < 0) {
+                    parent = iterator;
+                    iterator = iterator.right;
+                } else {
+                    if (iterator.left == null && iterator.right == null) {
+                        // this is leaf node
+                        if (parent == root) {
+                            root = null;
+                            break;
+                        } else {
+                            if (parent.left == iterator) {
+                                parent.left = null;
+                                break;
+                            } else {
+                                parent.right = null;
+                                break;
+                            }
+                        }
+                    } else {
+                        if (iterator.left != null && iterator.right == null) {
+                            if (parent == null) {
+                                root = iterator.left;
+                                break;
+                            } else {
+                                if (parent.left == iterator) {
+                                    parent.left = iterator.left;
+                                    break;
+                                } else {
+                                    parent.right = iterator.left;
+                                    break;
+                                }
+                            }
+                        } else if (iterator.left == null && iterator.right != null) {
+                            if (parent == null) {
+                                root = iterator.right;
+                                break;
+                            } else {
+                                if (parent.left == iterator) {
+                                    parent.left = iterator.right;
+                                    break;
+                                } else {
+                                    parent.right = iterator.right;
+                                    break;
+                                }
+                            }
+                        } else {
+                            // this is hard.
+                            TreeNode<T> inorderSuccessor = iterator.right;
+                            while (inorderSuccessor.left != null) {
+                                inorderSuccessor = inorderSuccessor.left;
+                            }
+                            delete(inorderSuccessor.getData());
+                            
+                            if (parent != null) {
+                                if (parent.left == iterator) {
+                                    parent.left = inorderSuccessor;
+                                } else {
+                                    parent.right = inorderSuccessor;
+                                }
+                            } else {
+                                root = inorderSuccessor;
+                            }
+                            inorderSuccessor.left = iterator.left;
+                            inorderSuccessor.right = iterator.right;
+                            
+                            break;
+                        }
+                    }
+                }
+            }
+            if (iterator != null) {
+                iterator.left = null;
+                iterator.right = null;
+            }
+            return iterator;
+        }
+    }
+    
     public void toPreOrder(TreeNode node, ArrayList<TreeNode> out) {
         if (node != null) {
             out.add(node);
